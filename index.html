@@ -1,47 +1,37 @@
 <html>
-  <h1>Hello</h1>
+  <head>
+    <!-- Load plotly.js into the DOM -->
+    <script src='https://cdn.plot.ly/plotly-2.4.2.min.js'></script>
+    <script>
+      var trace1 = {
+        x: [1, 2, 3, 4],
+        y: [10, 15, 13, 17],
+        mode: 'markers',
+        type: 'scatter'
+      };
 
-<div>
-  <canvas id="myChart"></canvas>
-</div>
+      var trace2 = {
+        x: [2, 3, 4, 5],
+        y: [16, 5, 11, 9],
+        mode: 'lines',
+        type: 'scatter'
+      };
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-  const labels = [
-  'January',
-  'February',
-  'March',
-  'April',
-  'May',
-  'June',
-];
-const data = {
-  labels: labels,
-  datasets: [{
-    label: 'My First dataset',
-    backgroundColor: 'rgb(255, 99, 132)',
-    borderColor: 'rgb(255, 99, 132)',
-    data: [0, 10, 5, 2, 20, 30, 45],
-  }]
-};
-// </block:setup>
+      var trace3 = {
+        x: [1, 2, 3, 4],
+        y: [12, 9, 15, 12],
+        mode: 'lines+markers',
+        type: 'scatter'
+      };
 
-// <block:config:0>
-const config = {
-  type: 'line',
-  data: data,
-  options: {}
-};
-// </block:config>
+      var data = [trace1, trace2, trace3];
 
-module.exports = {
-  actions: [],
-  config: config,
-};
+      Plotly.newPlot('myDiv', data);
 
-  var myChart = new Chart(
-    document.getElementById('myChart'),
-    config
-  );
-</script>
+    </script>
+  </head>
+  
+  <body>
+    <div id='myDiv'><!-- Plotly chart will be drawn inside this DIV --></div>
+  </body>
 </html>
