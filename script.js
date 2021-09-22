@@ -11,7 +11,7 @@ const config = {
 firebase.initializeApp(config);
 
 // Number of last elements to work with, in the 'timestamped_measures' node of the database: 
-const nbOfElts = 300;
+const nbOfElts = 10;
 
 // The big picture: EACH TIME A VALUE CHANGES in the 'timestamped_measures' node, e.g.
 // when a new timestamped measure has been pushed to that node,
@@ -21,7 +21,7 @@ const nbOfElts = 300;
 // Those sliding arrays produce a live data effect.
 // -----
 // See https://firebase.google.com/docs/database/web/lists-of-data for trigger syntax:
-firebase.database().ref('measurements').limitToLast(nbOfElts).on('temp', ts_measures => {
+firebase.database().ref('measurements').limitToLast(nbOfElts).on('value', ts_measures => {
     // If you want to get into details, read the following comments :-)
     // 'ts_measures' is a snapshot raw Object, obtained on changed value of 'timestamped_measures' node
     // e.g. a new push to that node, but is not exploitable yet.
