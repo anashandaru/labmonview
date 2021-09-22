@@ -1,11 +1,11 @@
 // REPLACE <...> BY YOUR FIREBASE PROJECT CONFIGURATION:
 const config = {
-    apiKey: "<API_KEY>",
-    authDomain: "<PROJECT_ID>.firebaseapp.com",
-    databaseURL: "https://<DATABASE_NAME>.firebaseio.com",
-    projectId: "<PROJECT_ID>",
-    storageBucket: "<BUCKET>.appspot.com",
-    messagingSenderId: "<SENDER_ID>"
+    apiKey: "AIzaSyCsSxN_pAQbl_ePNSyRY8oJhx_mtvTAA3o",
+    authDomain: "labmon-5dd47.firebaseapp.com",
+    databaseURL: "https://labmon-5dd47-default-rtdb.asia-southeast1.firebasedatabase.app/",
+    projectId: "labmon-5dd47",
+    storageBucket: "labmon-5dd47.appspot.com",
+    messagingSenderId: "740882006919"
   };
 
 firebase.initializeApp(config);
@@ -21,7 +21,7 @@ const nbOfElts = 300;
 // Those sliding arrays produce a live data effect.
 // -----
 // See https://firebase.google.com/docs/database/web/lists-of-data for trigger syntax:
-firebase.database().ref('timestamped_measures').limitToLast(nbOfElts).on('value', ts_measures => {
+firebase.database().ref('measurements').limitToLast(nbOfElts).on('temp', ts_measures => {
     // If you want to get into details, read the following comments :-)
     // 'ts_measures' is a snapshot raw Object, obtained on changed value of 'timestamped_measures' node
     // e.g. a new push to that node, but is not exploitable yet.
@@ -47,7 +47,7 @@ firebase.database().ref('timestamped_measures').limitToLast(nbOfElts).on('value'
     ts_measures.forEach(ts_measure => {
         //console.log(ts_measure.val().timestamp, ts_measure.val().value);
         timestamps.push(moment(ts_measure.val().timestamp).format('YYYY-MM-DD HH:mm:ss'));
-        values.push(ts_measure.val().value);
+        values.push(ts_measure.val().temp);
     });
 
     // Get a reference to the DOM node that welcomes the plot drawn by Plotly.js:
