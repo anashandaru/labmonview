@@ -8,7 +8,7 @@ const config = {
     messagingSenderId: "740882006919"
   };
 
-firebase.initializeApp(config);
+// firebase.initializeApp(config);
 
 // Number of last elements to work with, in the 'timestamped_measures' node of the database: 
 const nbOfElts = 10;
