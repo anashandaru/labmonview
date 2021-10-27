@@ -47,37 +47,49 @@ firebase.database().ref('measurements').limitToLast(nbOfElts).on('value', ts_mea
 
     // We prepare empty arrays to welcome timestamps and luminosity values:
     let timestamps = [];
-    let values = [];
+    let temp = [];
+    let humi = [];
 
     // Next, we iterate on each element of the 'ts_measures' raw Object
     // in order to fill the arrays.
     // Let's call 'ts_measure' ONE element of the ts_measures raw Object
     // A handler function written here as an anonymous function with fat arrow syntax
     // tells what to do with each element:
-    // * apply the val() method to it to gain access to values of 'timestamp' and 'value',
+    // * apply the val() method to it to gain access to temp of 'timestamp' and 'value',
     // * push those latter to the appropriate arrays.
-    // Note: The luminosity value is directly pushed to 'values' array but the timestamp,
+    // Note: The luminosity value is directly pushed to 'temp' array but the timestamp,
     // which is an Epoch time in milliseconds, is converted to human date
     // thanks to the moment().format() function coming from the moment.js library.    
     
     ts_measures.forEach(ts_measure => {
         //console.log(ts_measure.val().timestamp, ts_measure.val().value);
         timestamps.push(moment(ts_measure.val().timestamp).format('YYYY-MM-DD HH:mm:ss'));
-        values.push(ts_measure.val().temp);
+        temp.push(ts_measure.val().temp);
+        humi.push(ts_measure.val().humi);
     });
 
     // Get a reference to the DOM node that welcomes the plot drawn by Plotly.js:
-    myPlotDiv = document.getElementById('myPlot');
+    tempPlotDiv = document.getElementById('tempPlot');
+    humiPlotDiv = document.getElementById('humiPlot');
 
     // We generate x and y data necessited by Plotly.js to draw the plot
     // and its layout information as well:
     // See https://plot.ly/javascript/getting-started/
-    const data = [{
+    const data1 = [{
         x: timestamps,
-        y: values
+        y: temp,
+        name: 'temp',
+        mode: 'lines+markers'
     }];
 
-    const layout = {
+    const data2 = [{
+        x: timestamps,
+        y: humi,
+        name: 'humi',
+        mode: 'lines+markers'
+    }];
+
+    const templayout = {
         title: '<b>Pemantauan Kondisi Ruang Laboratorium</b>',
         titlefont: {
             family: 'Courier New, monospace',
@@ -103,6 +115,34 @@ firebase.database().ref('measurements').limitToLast(nbOfElts).on('value', ts_mea
             pad: 0
         }
     }
+
+    const humilayout = {
+        title: '<b>Pemantauan Kondisi Ruang Laboratorium</b>',
+        titlefont: {
+            family: 'Courier New, monospace',
+            size: 16,
+            color: '#000'
+        },
+        xaxis: {
+            linecolor: 'black',
+            linewidth: 2
+        },
+        yaxis: {
+            title: '<b>Kelembaban Ruangan (%)</b>',
+            titlefont: {
+                family: 'Courier New, monospace',
+                size: 14,
+                color: '#000'
+            },
+            linecolor: 'black',
+            linewidth: 2,
+        },
+        margin: {
+            r: 50,
+            pad: 0
+        }
+    }
     // At last we plot data :-)
-    Plotly.newPlot(myPlotDiv, data, layout, { responsive: true });
+    Plotly.newPlot(tempPlotDiv, data1, templayout, { responsive: true });
+    Plotly.newPlot(humiPlotDiv, data2, humilayout, { responsive: true });
 });
