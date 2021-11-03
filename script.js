@@ -69,80 +69,80 @@ firebase.database().ref('measurements').limitToLast(nbOfElts).on('value', ts_mea
     });
 
     // Get a reference to the DOM node that welcomes the plot drawn by Plotly.js:
-    tempPlotDiv = document.getElementById('tempPlot');
-    humiPlotDiv = document.getElementById('humiPlot');
+    labAirPlotDiv = document.getElementById('labAir');
 
     // We generate x and y data necessited by Plotly.js to draw the plot
     // and its layout information as well:
     // See https://plot.ly/javascript/getting-started/
-    const data1 = [{
+
+    const config = {
+        displayModeBar: false, // this is the line that hides the bar.
+        responsive: true,
+      };
+
+    var trace1 = {
         x: timestamps,
         y: temp,
-        name: 'temp',
+        name: 'Suhu',
+        type: 'scatter',
         mode: 'lines+markers'
-    }];
-
-    const data2 = [{
+      };
+      
+      var trace2 = {
         x: timestamps,
         y: humi,
-        name: 'humi',
+        name: 'Kelembaban',
+        yaxis: 'y2',
+        type: 'scatter',
         mode: 'lines+markers'
-    }];
-
-    const templayout = {
-        title: '<b>Pemantauan Kondisi Ruang Laboratorium</b>',
+      };
+      
+      var data = [trace1, trace2];
+      
+      var layout = {
+        title: '<b>Lab Air</b>',
         titlefont: {
             family: 'Courier New, monospace',
             size: 16,
             color: '#000'
         },
         xaxis: {
-            linecolor: 'black',
-            linewidth: 2
+            showgrid: false,
+            linewidth: 2,
+            fixedrange: true
         },
         yaxis: {
-            title: '<b>Suhu Ruangan (C)</b>',
+            title: '<b>Suhu (C)</b>',
+            showgrid: false,
+            linewidth: 2,
             titlefont: {
                 family: 'Courier New, monospace',
                 size: 14,
                 color: '#000'
             },
-            linecolor: 'black',
-            linewidth: 2,
+            fixedrange: true
         },
-        margin: {
-            r: 50,
-            pad: 0
-        }
-    }
-
-    const humilayout = {
-        title: '<b>Pemantauan Kondisi Ruang Laboratorium</b>',
-        titlefont: {
+        yaxis2: {
+          title: '<b>Kelembaban (%)</b>',
+          showgrid: false,
+          linewidth: 2,
+        //   titlefont: {color: 'rgb(148, 103, 189)'},
+        //   tickfont: {color: 'rgb(148, 103, 189)'},
+          overlaying: 'y',
+          side: 'right',
+          titlefont: {
             family: 'Courier New, monospace',
             size: 16,
             color: '#000'
+          },
+          fixedrange: true
         },
-        xaxis: {
-            linecolor: 'black',
-            linewidth: 2
-        },
-        yaxis: {
-            title: '<b>Kelembaban Ruangan (%)</b>',
-            titlefont: {
-                family: 'Courier New, monospace',
-                size: 14,
-                color: '#000'
-            },
-            linecolor: 'black',
-            linewidth: 2,
-        },
-        margin: {
-            r: 50,
-            pad: 0
-        }
-    }
-    // At last we plot data :-)
-    Plotly.newPlot(tempPlotDiv, data1, templayout, { responsive: true });
-    Plotly.newPlot(humiPlotDiv, data2, humilayout, { responsive: true });
+        legend: {
+            x: 1,
+            xanchor: 'right',
+            y: 1
+          }
+      };
+      
+      Plotly.newPlot(labAirPlotDiv, data, layout, config);
 });
